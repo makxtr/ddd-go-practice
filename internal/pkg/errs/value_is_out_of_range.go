@@ -38,10 +38,10 @@ func NewValueIsOutOfRangeError(paramName string, value any, min any, max any) *V
 func (e *ValueIsOutOfRangeError) Error() string {
 	if e.Cause != nil {
 		return fmt.Sprintf("%s: %s is %v, min value is %v, max value is %v (cause: %v)",
-			ErrValueIsInvalid, sanitize(e.Value), e.ParamName, e.Min, e.Max, e.Cause)
+			ErrValueIsOutOfRange, e.ParamName, sanitize(e.Value), e.Min, e.Max, e.Cause)
 	}
 	return fmt.Sprintf("%s: %s is %v, min value is %v, max value is %v",
-		ErrValueIsInvalid, sanitize(e.Value), e.ParamName, e.Min, e.Max)
+		ErrValueIsOutOfRange, e.ParamName, sanitize(e.Value), e.Min, e.Max)
 }
 
 func (e *ValueIsOutOfRangeError) Unwrap() error {
