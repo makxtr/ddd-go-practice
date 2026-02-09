@@ -2,7 +2,6 @@ package courier
 
 import (
 	"delivery/internal/pkg/errs"
-	"errors"
 
 	"github.com/google/uuid"
 )
@@ -14,21 +13,15 @@ type StoragePlace struct {
 	orderId     *uuid.UUID
 }
 
-var (
-	ErrOrderAlreadyStored      = errors.New("order already stored")
-	ErrOrderNotHasEnoughVolume = errors.New("order not has enough volume")
-)
-
 func (sp *StoragePlace) CanStore(volume int) (bool, error) {
 	if sp.isOccupied() {
-		return false, ErrOrderAlreadyStored
+		return false, NewOrderAlreadyStoredError(*sp.orderId)
 	}
 	if sp.totalVolume < volume {
-		return false, ErrOrderNotHasEnoughVolume
+		return false, NewOrderNotHasEnoughVolumeError(volume, sp.totalVolume)
 	}
 	return true, nil
 }
-
 func (sp *StoragePlace) Store(orderID uuid.UUID, volume int) error {
 	if _, err := sp.CanStore(volume); err != nil {
 		return err
