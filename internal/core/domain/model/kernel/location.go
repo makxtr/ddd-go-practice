@@ -79,3 +79,7 @@ func (l Location) Equals(other Location) bool {
 func (l Location) IsEmpty() bool {
 	return !l.isSet
 }
+
+func (l Location) IsValid() bool {
+	return l.isSet
+}
