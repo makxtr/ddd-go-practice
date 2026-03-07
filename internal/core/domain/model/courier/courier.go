@@ -41,6 +41,14 @@ func NewCourier(name string, speed int, location kernel.Location) (*Courier, err
 	}, nil
 }
 
+func (c *Courier) ID() uuid.UUID {
+	return c.id
+}
+
+func (c *Courier) Name() string {
+	return c.name
+}
+
 func (c *Courier) Move(target kernel.Location) error {
 	if !target.IsValid() {
 		return errs.NewValueIsRequiredError("target")
