@@ -115,6 +115,15 @@ func (c *Courier) CompleteOrder(orderID uuid.UUID) error {
 	return sp.Clear(orderID)
 }
 
+func (c *Courier) IsFree() bool {
+	for i := range c.storagePlaces {
+		if c.storagePlaces[i].isOccupied() {
+			return false
+		}
+	}
+	return true
+}
+
 func (c *Courier) CalculateTimeToLocation(target kernel.Location) (int, error) {
 	distance, err := c.location.DistanceTo(target)
 	if err != nil {
