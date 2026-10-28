@@ -12,4 +12,5 @@ type OrderRepository interface {
 	Get(ctx context.Context, id uuid.UUID) (*order.Order, error)
 	GetFirstCreated(ctx context.Context) (*order.Order, error)
 	GetAllAssigned(ctx context.Context) ([]*order.Order, error)
+	GetAllNotCompleted(ctx context.Context) ([]*order.Order, error)
 }

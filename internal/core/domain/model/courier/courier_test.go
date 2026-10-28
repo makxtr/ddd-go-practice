@@ -7,6 +7,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func validLocation() kernel.Location {
@@ -255,4 +256,12 @@ func Test_CalculateTimeToLocationReturnsErrorOnEmptyTarget(t *testing.T) {
 	// Assert
 	assert.Error(t, err)
 	assert.ErrorIs(t, err, errs.ErrValueIsRequired)
+}
+func Test_CourierExposesLocationAndSpeed(t *testing.T) {
+	loc := validLocation()
+	c, err := NewCourier("Иван", 2, loc)
+	require.NoError(t, err)
+
+	assert.Equal(t, loc, c.Location())
+	assert.Equal(t, 2, c.Speed())
 }

@@ -49,6 +49,14 @@ func (c *Courier) Name() string {
 	return c.name
 }
 
+func (c *Courier) Location() kernel.Location {
+	return c.location
+}
+
+func (c *Courier) Speed() int {
+	return c.speed
+}
+
 func (c *Courier) Move(target kernel.Location) error {
 	if !target.IsValid() {
 		return errs.NewValueIsRequiredError("target")

@@ -149,3 +149,28 @@ func TestOrderRepository_GetAllAssigned_Empty(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Empty(t, assigned)
 }
+func TestOrderRepository_GetAllNotCompleted(t *testing.T) {
+	// Arrange
+	repo := NewOrderRepository()
+	ctx := context.Background()
+	created := newTestOrder(t)
+	assigned := newTestOrder(t)
+	require.NoError(t, assigned.Assign(uuid.New()))
+	completed := newTestOrder(t)
+	require.NoError(t, completed.Assign(uuid.New()))
+	require.NoError(t, completed.Complete())
+	_ = repo.Add(ctx, created)
+	_ = repo.Add(ctx, assigned)
+	_ = repo.Add(ctx, completed)
+
+	// Act
+	got, err := repo.GetAllNotCompleted(ctx)
+
+	// Assert
+	require.NoError(t, err)
+	ids := []uuid.UUID{}
+	for _, o := range got {
+		ids = append(ids, o.ID())
+	}
+	assert.ElementsMatch(t, []uuid.UUID{created.ID(), assigned.ID()}, ids)
+}

@@ -66,3 +66,15 @@ func (r *CourierRepository) GetAllFree(_ context.Context) ([]*courier.Courier, e
 
 	return result, nil
 }
+
+func (r *CourierRepository) GetAll(_ context.Context) ([]*courier.Courier, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	result := make([]*courier.Courier, 0, len(r.couriers))
+	for _, c := range r.couriers {
+		result = append(result, c)
+	}
+
+	return result, nil
+}

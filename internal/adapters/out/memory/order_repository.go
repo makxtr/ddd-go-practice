@@ -79,3 +79,17 @@ func (r *OrderRepository) GetAllAssigned(_ context.Context) ([]*order.Order, err
 
 	return result, nil
 }
+
+func (r *OrderRepository) GetAllNotCompleted(_ context.Context) ([]*order.Order, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	var result []*order.Order
+	for _, o := range r.orders {
+		if o.Status() == order.StatusCreated || o.Status() == order.StatusAssigned {
+			result = append(result, o)
+		}
+	}
+
+	return result, nil
+}

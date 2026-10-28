@@ -118,3 +118,20 @@ func TestCourierRepository_GetAllFree_AllBusy(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Empty(t, free)
 }
+func TestCourierRepository_GetAll(t *testing.T) {
+	// Arrange
+	repo := NewCourierRepository()
+	ctx := context.Background()
+	free := newTestCourier(t)
+	busy := newTestCourier(t)
+	require.NoError(t, busy.TakeOrder(uuid.New(), 5))
+	_ = repo.Add(ctx, free)
+	_ = repo.Add(ctx, busy)
+
+	// Act
+	got, err := repo.GetAll(ctx)
+
+	// Assert
+	require.NoError(t, err)
+	assert.Len(t, got, 2)
+}

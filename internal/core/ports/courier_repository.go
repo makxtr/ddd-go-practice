@@ -12,4 +12,5 @@ type CourierRepository interface {
 	Update(ctx context.Context, aggregate *courier.Courier) error
 	Get(ctx context.Context, id uuid.UUID) (*courier.Courier, error)
 	GetAllFree(ctx context.Context) ([]*courier.Courier, error)
+	GetAll(ctx context.Context) ([]*courier.Courier, error)
 }
